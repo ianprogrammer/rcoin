@@ -1,0 +1,18 @@
+[package]
+name = "rcoin"
+version = "0.1.0"
+authors = ["Ian Oliveira <ian.oliveira@ifood.com.br>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+crypto-hash = "0.3.4"
+
+[lib]
+name="rcoinlib"
+path="src/lib.rs"
+
+[[bin]]
+name="rcoin"
+path="src/main.rs"
