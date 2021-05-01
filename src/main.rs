@@ -3,27 +3,14 @@ use rcoinlib::*;
 fn main() {
     let mut blockchain = Blockchain::new();
 
-    let genesis_block = Block::new(vec![Transaction {
+    blockchain.add_new_transaction(Transaction {
         sender: String::from("Ryan"),
         receiver: String::from("Dan"),
         amount: 2000.0,
-    }]);
+    });
+    blockchain.mine_unined_transactions("First Miner".to_owned());
 
-    let first_block = Block::new(vec![Transaction {
-        sender: String::from("Sam"),
-        receiver: String::from("Michal"),
-        amount: 2500.0,
-    }]);
+    println!("{}", blockchain.is_valid_chain());
 
-    let second_block = Block::new(vec![Transaction {
-        sender: String::from("Michal"),
-        receiver: String::from("Dan"),
-        amount: 1000.0,
-    }]);
-
-    blockchain.add_block(genesis_block);
-    blockchain.add_block(first_block);
-    blockchain.add_block(second_block);
-
-    println!("{:?}", blockchain)
+    println!("{:#?}", blockchain);
 }
