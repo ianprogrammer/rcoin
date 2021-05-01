@@ -17,6 +17,7 @@ impl Blockchain {
             None => block.set_pre_hash("0".to_string()),
         };
         block.set_hash();
+        block.mine();
         self.blocks.push(block)
     }
 
@@ -24,7 +25,14 @@ impl Blockchain {
         let blocks = &self.blocks;
 
         for (i, block) in blocks.iter().enumerate() {
-            if block.hash != calculate_hash(&block.pre_hash, &block.transaction, &block.timestamp) {
+            if block.hash
+                != calculate_hash(
+                    &block.pre_hash,
+                    &block.transaction,
+                    &block.timestamp,
+                    &block.nonce,
+                )
+            {
                 return false;
             }
 
