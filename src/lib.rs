@@ -7,6 +7,7 @@ pub mod blockchain;
 pub use blockchain::Blockchain;
 
 const DIFFICULT_LEVEL: i32 = 2;
+const MINING_REWARD: f32 = 100f32;
 
 pub fn now() -> u64 {
     let start = SystemTime::now();
