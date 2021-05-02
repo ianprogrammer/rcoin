@@ -1,5 +1,7 @@
 mod block;
 pub use block::Block;
+pub mod wallet;
+pub use wallet::Wallet;
 pub mod transaction;
 use std::time::{SystemTime, UNIX_EPOCH};
 pub use transaction::Transaction;

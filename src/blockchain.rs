@@ -1,4 +1,5 @@
 use super::*;
+use ed25519_dalek::PublicKey;
 
 #[derive(Debug)]
 
@@ -18,25 +19,37 @@ impl Blockchain {
     }
 
     pub fn add_new_transaction(&mut self, transaction: Transaction) {
+        if transaction.sender.is_none() || transaction.receiver.is_none() {
+            panic!("Transaction sender and receiver must have valid address")
+        }
+
+        if !transaction.is_valid_transaction() {
+            panic!("Transaction must  be valid")
+        }
         self.unmined_transactions.push(transaction)
     }
 
-    pub fn mine_unined_transactions(&mut self, mine_address: String) {
+    pub fn mine_unined_transactions(&mut self, mine_address: PublicKey) {
+        self.unmined_transactions.push(Transaction {
+            sender: None,
+            receiver: Some(mine_address),
+            amount: self.mining_reward,
+            signature: None,
+        });
+
         let transactions = &self.unmined_transactions;
         let mut block = Block::new(transactions.to_vec());
-
         match self.blocks.last() {
             Some(pre_block) => block.set_pre_hash(pre_block.hash.to_owned()),
-            None => block.set_pre_hash("0".to_string()),
+            None => block.set_pre_hash("0".to_string()), // genesis_block
         }
         block.set_hash();
+
         block.mine();
+
         self.blocks.push(block);
-        self.unmined_transactions = vec![Transaction {
-            sender: String::new(),
-            receiver: mine_address,
-            amount: self.mining_reward,
-        }]
+
+        self.unmined_transactions = Vec::new();
     }
 
     pub fn add_block(&mut self, mut block: Block) {

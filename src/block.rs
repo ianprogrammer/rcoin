@@ -50,4 +50,13 @@ impl Block {
         }
         println!("Block as mined!")
     }
+
+    pub fn has_valid_transactions(&self) -> bool {
+        for tran in &self.transaction {
+            if !tran.is_valid_transaction() {
+                return false;
+            }
+        }
+        return true;
+    }
 }
